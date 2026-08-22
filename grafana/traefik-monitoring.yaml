@@ -1,0 +1,33 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+
+spec:
+  valuesContent: |-
+    ports:
+      web:
+        allowACMEByPass: true
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
+              permanent: true
+
+    metrics:
+      prometheus:
+        addEntryPointsLabels: true
+        addRoutersLabels: true
+        addServicesLabels: true
+
+        service:
+          enabled: true
+
+        serviceMonitor:
+          enabled: true
+          namespace: monitoring
+
+          additionalLabels:
+            release: monitoring

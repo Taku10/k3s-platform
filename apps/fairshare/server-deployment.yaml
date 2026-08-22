@@ -27,14 +27,24 @@ spec:
             - containerPort: 5000
 
           env:
-            - name: NODE_ENV
-              value: "nonprod"
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/run/secrets/firebase/service-account.json
 
-            - name: PORT
-              value: "5000"
+            - name: GOOGLE_CLOUD_PROJECT
+              value: fareshare-20b22
 
             - name: MONGO_URI
               valueFrom:
                 secretKeyRef:
                   name: fairshare-secrets
                   key: MONGO_URI
+
+          volumeMounts:
+            - name: firebase-admin
+              mountPath: /var/run/secrets/firebase
+              readOnly: true
+
+      volumes:
+        - name: firebase-admin
+          secret:
+            secretName: fairshare-firebase-admin
