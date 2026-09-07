@@ -6,3 +6,6 @@ namespace: prod
 resources:
   - ../../base
   - ingress.yaml
+
+patches:
+  - path: server-patch.yaml
