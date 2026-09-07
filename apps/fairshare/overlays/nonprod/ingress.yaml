@@ -4,7 +4,7 @@ kind: Ingress
 metadata:
   name: fairshare
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-nonprod
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 
 spec:
   ingressClassName: traefik
