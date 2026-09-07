@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: fairshare-client
-  namespace: nonprod
 
 spec:
   replicas: 2

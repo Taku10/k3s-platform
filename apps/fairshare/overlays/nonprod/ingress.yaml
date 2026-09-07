@@ -3,8 +3,6 @@ kind: Ingress
 
 metadata:
   name: fairshare
-  namespace: nonprod
-
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
 
@@ -13,11 +11,11 @@ spec:
 
   tls:
     - hosts:
-        - fairshare.takunda.cloud
-      secretName: fairshare-tls
+        - fairshare-nonprod.takunda.cloud
+      secretName: fairshare-nonprod-tls
 
   rules:
-    - host: fairshare.takunda.cloud
+    - host: fairshare-nonprod.takunda.cloud
       http:
         paths:
           - path: /

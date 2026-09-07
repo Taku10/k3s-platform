@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+
+metadata:
+  name: fairshare-nonprod
+  namespace: argocd
+
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/Taku10/k3s-platform.git
+    targetRevision: main
+    path: apps/fairshare/overlays/nonprod
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nonprod
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true
