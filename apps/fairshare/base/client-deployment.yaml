@@ -20,6 +20,10 @@ spec:
         - name: fairshare-client
           image: ghcr.io/taku10/fairshare-client:latest
           imagePullPolicy: Always
-
+          
+          envFrom:
+            - configMapRef:
+                name: fairshare-client-config
+                
           ports:
             - containerPort: 80
