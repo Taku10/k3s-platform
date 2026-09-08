@@ -6,3 +6,10 @@ namespace: nonprod
 resources:
   - ../../base
   - ingress.yaml
+
+images:
+  - name: ghcr.io/taku10/fairshare-client
+    newTag: 61dacb0
+
+  - name: ghcr.io/taku10/fairshare-server
+    newTag: 61dacb0
