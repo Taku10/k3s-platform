@@ -17,7 +17,7 @@ patches:
 
 images:
   - name: ghcr.io/taku10/fairshare-client
-    newTag: 4867593
+    newTag: "4867593"
 
   - name: ghcr.io/taku10/fairshare-server
-    newTag: 4867593
+    newTag: "4867593"
