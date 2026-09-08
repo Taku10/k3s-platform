@@ -6,6 +6,10 @@ namespace: nonprod
 resources:
   - ../../base
   - ingress.yaml
+configMapGenerator:
+  - name: fairshare-client-config
+    envs:
+      - config.env
 
 images:
   - name: ghcr.io/taku10/fairshare-client

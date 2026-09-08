@@ -6,7 +6,12 @@ namespace: prod
 resources:
   - ../../base
   - ingress.yaml
-
+  
+configMapGenerator:
+  - name: fairshare-client-config
+    envs:
+      - config.env
+      
 patches:
   - path: server-patch.yaml
 
