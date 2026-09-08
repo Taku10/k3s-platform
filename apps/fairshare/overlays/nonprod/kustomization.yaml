@@ -9,7 +9,7 @@ resources:
 
 images:
   - name: ghcr.io/taku10/fairshare-client
-    newTag: 49c6d04
+    newTag: 61dacb0
 
   - name: ghcr.io/taku10/fairshare-server
-    newTag: 49c6d04
+    newTag: 61dacb0
