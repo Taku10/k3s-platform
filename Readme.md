@@ -96,7 +96,7 @@ K3s
 Until a root bootstrap Application is added, register application definitions manually:
 
 ```bash
-kubectl apply -k argocd/fairshare
+kubectl apply -f argocd/fairshare/
 kubectl apply -k argocd/portfolio
 ```
 
