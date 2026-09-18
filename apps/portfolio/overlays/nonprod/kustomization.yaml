@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: nonprod
+
+resources:
+  - ../../base
+  - ingress.yaml
+
+replicas:
+  - name: portfolio
+    count: 1
+
+images:
+  - name: ghcr.io/taku10/takunda-profile
+    newTag: "08af4e2f31e8caebec1e5c6f4767bcdc463c8457"

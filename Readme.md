@@ -1,13 +1,12 @@
+# K3s Platform
 
-# k3s Platform
+A self-hosted Kubernetes platform for deploying and managing personal projects on an OVH VPS.
 
-A self-hosted Kubernetes platform for deploying and managing my personal projects.
-
-The cluster runs on an OVH VPS using k3s. Argo CD handles GitOps deployments, Traefik handles ingress, and Prometheus/Grafana are used for monitoring.
+K3s provides the Kubernetes cluster, Argo CD manages GitOps deployments, Traefik handles ingress, and cert-manager provisions TLS certificates.
 
 ## Stack
 
-- k3s
+- K3s
 - Argo CD
 - Traefik
 - cert-manager
@@ -16,11 +15,17 @@ The cluster runs on an OVH VPS using k3s. Argo CD handles GitOps deployments, Tr
 - Headlamp
 - Kustomize
 - GitHub Actions
-- GHCR
+- GitHub Container Registry
+
+## Repository responsibility
+
+This repository stores the desired state of applications and platform components running inside Kubernetes.
+
+Linux host configuration, K3s installation and the initial Argo CD bootstrap are maintained separately in [Taku10/ovh-infra](https://github.com/Taku10/ovh-infra).
 
 ## Environments
 
-Applications are separated using Kubernetes namespaces.
+Applications are separated with Kubernetes namespaces:
 
 ```text
 k3s
@@ -28,119 +33,110 @@ k3s
 ├── monitoring
 ├── nonprod
 └── prod
-````
-
-Development is done with Docker Compose before changes are deployed to nonprod.
-
-Nonprod is used for testing before changes are promoted to production.
-
-## Deployment Flow
-
 ```
-+------------------+
-| Application Code |
-+------------------+
-         |
-         v
-+------------------+
-|      GitHub      |
-+------------------+
-         |
-         v
-+------------------+
-|  GitHub Actions  |
-+------------------+
-         |
-         v
-+------------------+
-| Build Docker Img |
-+------------------+
-         |
-         v
-+------------------+
-|       GHCR       |
-+------------------+
-         |
-         v
-+------------------+
-|  GitOps Config   |
-+------------------+
-         |
-         v
-+------------------+
-|     Argo CD      |
-+------------------+
-         |
-         v
-+------------------+
-|       k3s        |
-+------------------+
-```
+
+Nonproduction is used for validation before changes are promoted to production.
 
 ## Applications
 
-Applications running or planned for the platform:
+### FairShare
 
-* FairShare
-* Personal Portfolio
-* Fruiku
-* StackCash
+FairShare uses a shared Kustomize base with production and nonproduction overlays:
+
+```text
+apps/fairshare/
+├── base/
+└── overlays/
+    ├── nonprod/
+    └── prod/
+```
+
+### Personal portfolio
+
+The portfolio is deployed as a static Next.js export served by an unprivileged Nginx container:
+
+```text
+apps/portfolio/
+├── base/
+└── overlays/
+    ├── nonprod/
+    └── prod/
+```
+
+Endpoints:
+
+- Production: `https://takunda.cloud`
+- Nonproduction: `https://portfolio-nonprod.takunda.cloud`
+
+Container images are published to GHCR using immutable full Git commit SHA tags.
+
+## Deployment flow
+
+```text
+Application source
+       |
+       v
+GitHub Actions
+       |
+       v
+GHCR image tagged with commit SHA
+       |
+       v
+Kustomize environment overlay
+       |
+       v
+Argo CD
+       |
+       v
+K3s
+```
+
+## Register Argo CD applications
+
+Until a root bootstrap Application is added, register application definitions manually:
+
+```bash
+kubectl apply -f argocd/fairshare/
+kubectl apply -k argocd/portfolio
+```
+
+Argo CD then synchronizes the corresponding Kustomize overlays.
 
 ## Networking
 
-```
-+--------------------+
-|      Internet      |
-+--------------------+
-          |
-          v
-+--------------------+
-|        DNS         |
-+--------------------+
-          |
-          v
-+--------------------+
-|      OVH VPS       |
-+--------------------+
-          |
-          v
-+--------------------+
-|        UFW         |
-+--------------------+
-          |
-          v
-+--------------------+
-|      Traefik       |
-+--------------------+
-          |
-          v
-+--------------------+
-| Kubernetes Service |
-+--------------------+
-          |
-          v
-+--------------------+
-|        Pod         |
-+--------------------+
+Public traffic follows this path:
+
+```text
+Internet
+   |
+   v
+DNS
+   |
+   v
+OVH VPS
+   |
+   v
+Traefik
+   |
+   v
+Kubernetes Service
+   |
+   v
+Application Pod
 ```
 
-TLS certificates are managed with cert-manager.
+TLS certificates are managed by cert-manager.
 
-## Current Work
+## Current work
 
-* Create separate nonprod and prod deployments
-* Replace `latest` image tags with Git SHA tags
-* Add more applications to the cluster
-* Add centralized logging
-* Improve monitoring and alerting
-* Add NetworkPolicies
-* Improve secrets management
-* Add backup and recovery procedures
-* Introduce Helm for application deployments
+- Move Headlamp and monitoring installation into GitOps
+- Add a root Argo CD bootstrap Application
+- Add centralized logging
+- Improve monitoring and alerting
+- Add NetworkPolicies
+- Improve secrets management
+- Add backup and recovery procedures
 
 ## Goal
 
-The goal of this project is to build a small platform for deploying and managing multiple applications while improving my experience with Kubernetes, GitOps, CI/CD, networking, monitoring, and platform engineering.
-
-
-
+The goal is to build a small, production-minded platform for deploying multiple applications while developing practical experience with Kubernetes, GitOps, CI/CD, networking, monitoring and platform engineering.
