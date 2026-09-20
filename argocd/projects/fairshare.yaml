@@ -3,6 +3,8 @@ kind: AppProject
 metadata:
   name: fairshare
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
   labels:
     app.kubernetes.io/name: fairshare
     app.kubernetes.io/part-of: k3s-platform
