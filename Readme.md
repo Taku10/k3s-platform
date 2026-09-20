@@ -127,6 +127,10 @@ Application Pod
 
 TLS certificates are managed by cert-manager.
 
+## Documentation
+
+- [Portfolio migration from Firebase Hosting to K3s](docs/migrations/portfolio-firebase-to-k3s.md)
+
 ## Current work
 
 - Move Headlamp and monitoring installation into GitOps
