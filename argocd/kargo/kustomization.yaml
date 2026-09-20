@@ -3,3 +3,4 @@ kind: Kustomization
 
 resources:
   - kargo.yaml
+  - fairshare-pipeline.yaml

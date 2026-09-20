@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fairshare-delivery
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  labels:
+    app.kubernetes.io/name: fairshare-delivery
+    app.kubernetes.io/part-of: fairshare
+    platform.takunda.cloud/category: platform
+spec:
+  project: platform
+
+  source:
+    repoURL: https://github.com/Taku10/k3s-platform.git
+    targetRevision: main
+    path: kargo/fairshare
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: fairshare
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true

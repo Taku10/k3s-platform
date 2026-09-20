@@ -1,0 +1,20 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: nonprod
+  namespace: fairshare
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: fairshare
+      sources:
+        direct: true
+        autoPromotionOptions:
+          selectionPolicy: NewestFreight
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promote-fairshare
+          as: promote-fairshare

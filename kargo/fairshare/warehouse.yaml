@@ -1,0 +1,26 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: fairshare
+  namespace: fairshare
+spec:
+  freightCreationPolicy: Automatic
+  subscriptions:
+    - image:
+        repoURL: ghcr.io/taku10/fairshare-client
+        imageSelectionStrategy: NewestBuild
+        allowTagsRegexes:
+          - "^[0-9a-f]{7}$"
+        discoveryLimit: 5
+        cacheByTag: true
+    - image:
+        repoURL: ghcr.io/taku10/fairshare-server
+        imageSelectionStrategy: NewestBuild
+        allowTagsRegexes:
+          - "^[0-9a-f]{7}$"
+        discoveryLimit: 5
+        cacheByTag: true
+  freightCreationCriteria:
+    expression: |
+      imageFrom('ghcr.io/taku10/fairshare-client').Tag ==
+        imageFrom('ghcr.io/taku10/fairshare-server').Tag
