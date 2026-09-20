@@ -17,7 +17,8 @@ spec:
     path: argocd
     directory:
       recurse: true
-      exclude: '{bootstrap/root-application.yaml,**/kustomization.yaml}'
+      include: '{projects/*.yaml,fairshare/*.yaml,portfolio/*.yaml}'
+      exclude: '{projects/kustomization.yaml,fairshare/kustomization.yaml,portfolio/kustomization.yaml}'
 
   destination:
     server: https://kubernetes.default.svc
