@@ -4,9 +4,15 @@ kind: Application
 metadata:
   name: fairshare-prod
   namespace: argocd
+  labels:
+    app.kubernetes.io/name: fairshare
+    app.kubernetes.io/instance: fairshare-prod
+    app.kubernetes.io/part-of: fairshare
+    platform.takunda.cloud/environment: prod
+    platform.takunda.cloud/category: workload
 
 spec:
-  project: default
+  project: fairshare
 
   source:
     repoURL: https://github.com/Taku10/k3s-platform.git
