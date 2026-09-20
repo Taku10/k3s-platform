@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-bootstrap
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: platform-bootstrap
+    app.kubernetes.io/instance: platform-bootstrap
+    app.kubernetes.io/part-of: k3s-platform
+    platform.takunda.cloud/category: platform
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/Taku10/k3s-platform.git
+    targetRevision: main
+    path: argocd
+    directory:
+      recurse: true
+      exclude: '{bootstrap/root-application.yaml,**/kustomization.yaml}'
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
