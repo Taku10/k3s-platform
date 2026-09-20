@@ -73,16 +73,16 @@ Container images are published to GHCR using immutable full Git commit SHA tags.
 
 ### FruitKu
 
-FruitKu is a containerized Next.js application deployed to nonproduction first:
+FruitKu is a containerized Next.js application deployed only to production for now:
 
 ```text
 apps/fruitku/
 ├── base/
 └── overlays/
-    └── nonprod/
+    └── prod/
 ```
 
-Endpoint: `https://fruitku-nonprod.takunda.cloud`
+Endpoint: `https://fruitku.takunda.cloud`
 
 The workload image is pinned by digest. Its server-only Stripe key is supplied through the `fruitku-runtime` Kubernetes Secret and is never stored in Git.
 
