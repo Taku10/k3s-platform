@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: platform
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+  labels:
+    app.kubernetes.io/name: platform
+    app.kubernetes.io/part-of: k3s-platform
+    platform.takunda.cloud/category: platform
+spec:
+  description: Cluster-level platform controllers and delivery automation
+
+  sourceRepos:
+    - https://github.com/Taku10/k3s-platform.git
+    - ghcr.io/akuity/kargo-charts
+
+  destinations:
+    - namespace: kargo*
+      server: https://kubernetes.default.svc
+    - namespace: fairshare
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+    - group: admissionregistration.k8s.io
+      kind: MutatingWebhookConfiguration
+    - group: admissionregistration.k8s.io
+      kind: ValidatingWebhookConfiguration
+    - group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+    - group: apiregistration.k8s.io
+      kind: APIService
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRole
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRoleBinding
+    - group: kargo.akuity.io
+      kind: Project
+
+  orphanedResources:
+    warn: true

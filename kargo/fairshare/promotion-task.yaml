@@ -1,0 +1,54 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionTask
+metadata:
+  name: promote-fairshare
+  namespace: fairshare
+spec:
+  vars:
+    - name: gitopsRepo
+      value: https://github.com/Taku10/k3s-platform.git
+    - name: clientImage
+      value: ghcr.io/taku10/fairshare-client
+    - name: serverImage
+      value: ghcr.io/taku10/fairshare-server
+  steps:
+    - uses: git-clone
+      config:
+        repoURL: ${{ vars.gitopsRepo }}
+        checkout:
+          - branch: main
+            path: ./src
+          - branch: stage/${{ ctx.stage }}
+            create: true
+            path: ./out
+    - uses: git-clear
+      config:
+        path: ./out
+    - uses: kustomize-set-image
+      as: update-images
+      config:
+        path: ./src/apps/fairshare/overlays/${{ ctx.stage }}
+        images:
+          - image: ${{ vars.clientImage }}
+            tag: ${{ imageFrom(vars.clientImage).Tag }}
+          - image: ${{ vars.serverImage }}
+            tag: ${{ imageFrom(vars.serverImage).Tag }}
+    - uses: kustomize-build
+      config:
+        path: ./src/apps/fairshare/overlays/${{ ctx.stage }}
+        outPath: ./out
+    - uses: git-commit
+      as: commit
+      config:
+        path: ./out
+        message: ${{ task.outputs['update-images'].commitMessage }}
+    - uses: git-push
+      config:
+        path: ./out
+    - uses: argocd-update
+      config:
+        apps:
+          - name: fairshare-${{ ctx.stage }}
+            sources:
+              - repoURL: ${{ vars.gitopsRepo }}
+                desiredRevision: ${{ task.outputs.commit.commit }}

@@ -8,6 +8,7 @@ K3s provides the Kubernetes cluster, Argo CD manages GitOps deployments, Traefik
 
 - K3s
 - Argo CD
+- Kargo
 - Traefik
 - cert-manager
 - Prometheus
@@ -136,6 +137,7 @@ TLS certificates are managed by cert-manager.
 ## Documentation
 
 - [Argo CD project and label conventions](docs/argocd-conventions.md)
+- [FairShare delivery with Kargo](docs/kargo-fairshare.md)
 - [Portfolio migration from Firebase Hosting to K3s](docs/migrations/portfolio-firebase-to-k3s.md)
 
 ## Current work
