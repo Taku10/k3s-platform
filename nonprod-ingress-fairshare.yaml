@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  name: fairshare
+  namespace: nonprod
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: fairshare-nonprod.takunda.cloud
+    http:
+      paths:
+      - backend:
+          service:
+            name: fairshare-client
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - fairshare-nonprod.takunda.cloud
+    secretName: fairshare-nonprod-tls

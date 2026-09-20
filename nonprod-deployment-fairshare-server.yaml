@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fairshare-server
+  namespace: nonprod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fairshare-server
+  template:
+    metadata:
+      labels:
+        app: fairshare-server
+    spec:
+      containers:
+      - env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/run/secrets/firebase/service-account.json
+        - name: GOOGLE_CLOUD_PROJECT
+          value: fareshare-20b22
+        - name: MONGO_URI
+          valueFrom:
+            secretKeyRef:
+              key: MONGO_URI
+              name: fairshare-secrets
+        image: ghcr.io/taku10/fairshare-server:4db4c14
+        imagePullPolicy: Always
+        name: fairshare-server
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - mountPath: /var/run/secrets/firebase
+          name: firebase-admin
+          readOnly: true
+      volumes:
+      - name: firebase-admin
+        secret:
+          secretName: fairshare-firebase-admin

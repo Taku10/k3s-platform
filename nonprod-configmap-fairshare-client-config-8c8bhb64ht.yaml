@@ -1,0 +1,13 @@
+apiVersion: v1
+data:
+  FIREBASE_API_KEY: AIzaSyCg1SURXZ7GJDx5HTR8Cj106-GsbrnG9SM
+  FIREBASE_APP_ID: 1:593916419020:web:798f732237acb8db9e1b69
+  FIREBASE_AUTH_DOMAIN: fareshare-20b22.firebaseapp.com
+  FIREBASE_MEASUREMENT_ID: G-Y3HTX6QSP8
+  FIREBASE_MESSAGING_SENDER_ID: "593916419020"
+  FIREBASE_PROJECT_ID: fareshare-20b22
+  FIREBASE_STORAGE_BUCKET: fareshare-20b22.firebasestorage.app
+kind: ConfigMap
+metadata:
+  name: fairshare-client-config-8c8bhb64ht
+  namespace: nonprod
