@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: fruitku
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+  labels:
+    app.kubernetes.io/name: fruitku
+    app.kubernetes.io/part-of: k3s-platform
+    platform.takunda.cloud/category: workload
+spec:
+  description: FruitKu nonproduction workload
+
+  sourceRepos:
+    - https://github.com/Taku10/k3s-platform.git
+
+  destinations:
+    - namespace: nonprod
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+      name: nonprod
+
+  orphanedResources:
+    warn: true

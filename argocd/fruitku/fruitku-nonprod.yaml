@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fruitku-nonprod
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: fruitku
+    app.kubernetes.io/instance: fruitku-nonprod
+    app.kubernetes.io/part-of: fruitku
+    platform.takunda.cloud/environment: nonprod
+    platform.takunda.cloud/category: workload
+spec:
+  project: fruitku
+  source:
+    repoURL: https://github.com/Taku10/k3s-platform.git
+    targetRevision: main
+    path: apps/fruitku/overlays/nonprod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nonprod
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
