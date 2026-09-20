@@ -3,6 +3,12 @@ kind: Application
 metadata:
   name: portfolio-prod
   namespace: argocd
+  labels:
+    app.kubernetes.io/name: portfolio
+    app.kubernetes.io/instance: portfolio-prod
+    app.kubernetes.io/part-of: portfolio
+    platform.takunda.cloud/environment: prod
+    platform.takunda.cloud/category: workload
 spec:
   project: default
   source:

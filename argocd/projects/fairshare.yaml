@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: fairshare
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: fairshare
+    app.kubernetes.io/part-of: k3s-platform
+    platform.takunda.cloud/category: workload
+spec:
+  description: FairShare production and nonproduction workloads
+
+  sourceRepos:
+    - https://github.com/Taku10/k3s-platform.git
+
+  destinations:
+    - namespace: nonprod
+      server: https://kubernetes.default.svc
+    - namespace: prod
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+      name: nonprod
+    - group: ""
+      kind: Namespace
+      name: prod
+
+  orphanedResources:
+    warn: true
