@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: portfolio
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+  labels:
+    app.kubernetes.io/name: portfolio
+    app.kubernetes.io/part-of: k3s-platform
+    platform.takunda.cloud/category: workload
+spec:
+  description: Portfolio production and nonproduction workloads
+
+  sourceRepos:
+    - https://github.com/Taku10/k3s-platform.git
+
+  destinations:
+    - namespace: nonprod
+      server: https://kubernetes.default.svc
+    - namespace: prod
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+      name: nonprod
+    - group: ""
+      kind: Namespace
+      name: prod
+
+  orphanedResources:
+    warn: true
