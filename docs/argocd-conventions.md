@@ -44,12 +44,24 @@ Shared services such as Argo CD, cert-manager, ingress and monitoring should use
 
 New Applications should not remain in the permissive `default` project after their required permissions are understood.
 
-## Registration order
+## Root bootstrap
 
-Apply AppProjects before Applications:
+The `platform-bootstrap` Application is the only Argo CD Application applied manually:
 
 ```bash
-kubectl apply -k argocd/projects
-kubectl apply -k argocd/fairshare
-kubectl apply -k argocd/portfolio
+kubectl apply -f argocd/bootstrap/root-application.yaml
 ```
+
+It uses directory mode with an explicit allowlist for the `projects`, `fairshare` and `portfolio` manifest directories. Their `kustomization.yaml` files are excluded because directory mode applies Kubernetes resources directly rather than building Kustomize packages. The seed manifest is outside the allowlist, so it does not manage itself.
+
+When adding another AppProject or Application directory, add that directory to the bootstrap `include` pattern. This keeps new YAML files from being applied unintentionally.
+
+An AppProject managed by the root Application must use sync wave `-1` so it is created before the Applications assigned to it:
+
+```yaml
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+```
+
+After the initial apply, commit Git changes and allow `platform-bootstrap` to synchronize them. Do not manually apply its child Application manifests.

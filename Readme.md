@@ -21,7 +21,7 @@ K3s provides the Kubernetes cluster, Argo CD manages GitOps deployments, Traefik
 
 This repository stores the desired state of applications and platform components running inside Kubernetes.
 
-Linux host configuration, K3s installation and the initial Argo CD bootstrap are maintained separately in [Taku10/ovh-infra](https://github.com/Taku10/ovh-infra).
+Linux host configuration, K3s installation and the initial Argo CD installation are maintained separately in [Taku10/ovh-infra](https://github.com/Taku10/ovh-infra). After Argo CD is running, this repository's root bootstrap Application registers the GitOps resources.
 
 ## Environments
 
@@ -91,17 +91,22 @@ Argo CD
 K3s
 ```
 
-## Register Argo CD applications
+## Bootstrap Argo CD applications
 
-Until a root bootstrap Application is added, register AppProjects before their Applications:
+After Argo CD is installed, apply the root Application once:
 
 ```bash
-kubectl apply -k argocd/projects
-kubectl apply -k argocd/fairshare
-kubectl apply -k argocd/portfolio
+kubectl apply -f argocd/bootstrap/root-application.yaml
 ```
 
-Argo CD then synchronizes the corresponding Kustomize overlays.
+The `platform-bootstrap` Application then manages the AppProjects and child Applications stored under `argocd/`. Future changes are synchronized from Git; child definitions do not need to be applied manually.
+
+Verify the bootstrap:
+
+```bash
+kubectl get application platform-bootstrap -n argocd
+kubectl get appprojects,applications -n argocd
+```
 
 ## Networking
 
@@ -136,7 +141,6 @@ TLS certificates are managed by cert-manager.
 ## Current work
 
 - Move Headlamp and monitoring installation into GitOps
-- Add a root Argo CD bootstrap Application
 - Add centralized logging
 - Improve monitoring and alerting
 - Add NetworkPolicies
