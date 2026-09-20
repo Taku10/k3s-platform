@@ -12,10 +12,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - fruitku-nonprod.takunda.cloud
-      secretName: fruitku-nonprod-tls
+        - fruitku.takunda.cloud
+      secretName: fruitku-tls
   rules:
-    - host: fruitku-nonprod.takunda.cloud
+    - host: fruitku.takunda.cloud
       http:
         paths:
           - path: /

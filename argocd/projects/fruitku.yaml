@@ -10,19 +10,19 @@ metadata:
     app.kubernetes.io/part-of: k3s-platform
     platform.takunda.cloud/category: workload
 spec:
-  description: FruitKu nonproduction workload
+  description: FruitKu production workload
 
   sourceRepos:
     - https://github.com/Taku10/k3s-platform.git
 
   destinations:
-    - namespace: nonprod
+    - namespace: prod
       server: https://kubernetes.default.svc
 
   clusterResourceWhitelist:
     - group: ""
       kind: Namespace
-      name: nonprod
+      name: prod
 
   orphanedResources:
     warn: true
