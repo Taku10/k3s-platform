@@ -10,7 +10,7 @@ metadata:
     platform.takunda.cloud/environment: prod
     platform.takunda.cloud/category: workload
 spec:
-  project: default
+  project: portfolio
   source:
     repoURL: https://github.com/Taku10/k3s-platform.git
     targetRevision: main
