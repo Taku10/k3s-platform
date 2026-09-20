@@ -3,6 +3,12 @@ kind: Application
 metadata:
   name: portfolio-nonprod
   namespace: argocd
+  labels:
+    app.kubernetes.io/name: portfolio
+    app.kubernetes.io/instance: portfolio-nonprod
+    app.kubernetes.io/part-of: portfolio
+    platform.takunda.cloud/environment: nonprod
+    platform.takunda.cloud/category: workload
 spec:
   project: default
   source:
