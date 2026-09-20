@@ -93,10 +93,11 @@ K3s
 
 ## Register Argo CD applications
 
-Until a root bootstrap Application is added, register application definitions manually:
+Until a root bootstrap Application is added, register AppProjects before their Applications:
 
 ```bash
-kubectl apply -f argocd/fairshare/
+kubectl apply -k argocd/projects
+kubectl apply -k argocd/fairshare
 kubectl apply -k argocd/portfolio
 ```
 
@@ -129,6 +130,7 @@ TLS certificates are managed by cert-manager.
 
 ## Documentation
 
+- [Argo CD project and label conventions](docs/argocd-conventions.md)
 - [Portfolio migration from Firebase Hosting to K3s](docs/migrations/portfolio-firebase-to-k3s.md)
 
 ## Current work
