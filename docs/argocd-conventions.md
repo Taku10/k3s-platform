@@ -52,9 +52,11 @@ The `platform-bootstrap` Application is the only Argo CD Application applied man
 kubectl apply -f argocd/bootstrap/root-application.yaml
 ```
 
-It recursively discovers Kubernetes manifests under `argocd/`. It excludes its own seed manifest and every `kustomization.yaml`, because directory mode applies Kubernetes resources directly rather than building Kustomize packages.
+It uses directory mode with an explicit allowlist for the `projects`, `fairshare` and `portfolio` manifest directories. Their `kustomization.yaml` files are excluded because directory mode applies Kubernetes resources directly rather than building Kustomize packages. The seed manifest is outside the allowlist, so it does not manage itself.
 
-Keep AppProject and Application definitions under `argocd/`. An AppProject managed by the root Application must use sync wave `-1` so it is created before the Applications assigned to it:
+When adding another AppProject or Application directory, add that directory to the bootstrap `include` pattern. This keeps new YAML files from being applied unintentionally.
+
+An AppProject managed by the root Application must use sync wave `-1` so it is created before the Applications assigned to it:
 
 ```yaml
 metadata:
