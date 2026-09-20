@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fruitku
+  labels:
+    app.kubernetes.io/name: fruitku
+    app.kubernetes.io/component: web
+    app.kubernetes.io/part-of: fruitku
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - fruitku.takunda.cloud
+      secretName: fruitku-tls
+  rules:
+    - host: fruitku.takunda.cloud
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: fruitku
+                port:
+                  name: http

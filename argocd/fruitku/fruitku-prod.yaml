@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fruitku-prod
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: fruitku
+    app.kubernetes.io/instance: fruitku-prod
+    app.kubernetes.io/part-of: fruitku
+    platform.takunda.cloud/environment: prod
+    platform.takunda.cloud/category: workload
+spec:
+  project: fruitku
+  source:
+    repoURL: https://github.com/Taku10/k3s-platform.git
+    targetRevision: main
+    path: apps/fruitku/overlays/prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prod
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
