@@ -17,8 +17,8 @@ spec:
     path: argocd
     directory:
       recurse: true
-      include: '{projects/*.yaml,fairshare/*.yaml,portfolio/*.yaml,fruitku/*.yaml,kargo/*.yaml}'
-      exclude: '{projects/kustomization.yaml,fairshare/kustomization.yaml,portfolio/kustomization.yaml,fruitku/kustomization.yaml,kargo/kustomization.yaml}'
+      include: '{projects/*.yaml,fairshare/*.yaml,portfolio/*.yaml,fruitku/*.yaml,monitoring/*.yaml,kargo/*.yaml}'
+      exclude: '{projects/kustomization.yaml,fairshare/kustomization.yaml,portfolio/kustomization.yaml,fruitku/kustomization.yaml,monitoring/kustomization.yaml,kargo/kustomization.yaml}'
 
   destination:
     server: https://kubernetes.default.svc
