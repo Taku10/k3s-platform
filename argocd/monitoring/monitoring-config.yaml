@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring-config
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: monitoring-config
+    app.kubernetes.io/instance: monitoring-config
+    app.kubernetes.io/part-of: k3s-platform
+    platform.takunda.cloud/category: platform
+spec:
+  project: platform
+  source:
+    repoURL: https://github.com/Taku10/k3s-platform.git
+    targetRevision: main
+    path: platform/monitoring
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
