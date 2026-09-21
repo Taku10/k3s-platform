@@ -154,6 +154,7 @@ TLS certificates are managed by cert-manager.
 - [Argo CD project and label conventions](docs/argocd-conventions.md)
 - [FairShare delivery with Kargo](docs/kargo-fairshare.md)
 - [Portfolio migration from Firebase Hosting to K3s](docs/migrations/portfolio-firebase-to-k3s.md)
+- [Application monitoring](docs/monitoring.md)
 
 ## Current work
 
