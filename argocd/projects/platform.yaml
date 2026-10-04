@@ -19,6 +19,8 @@ spec:
   destinations:
     - namespace: kargo*
       server: https://kubernetes.default.svc
+    - namespace: portfolio
+      server: https://kubernetes.default.svc
     - namespace: fairshare
       server: https://kubernetes.default.svc
     - namespace: monitoring

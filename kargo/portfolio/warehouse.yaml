@@ -1,0 +1,15 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: portfolio
+  namespace: portfolio
+spec:
+  freightCreationPolicy: Automatic
+  subscriptions:
+    - image:
+        repoURL: ghcr.io/taku10/takunda-profile
+        imageSelectionStrategy: NewestBuild
+        allowTagsRegexes:
+          - "^[0-9a-f]{40}$"
+        discoveryLimit: 5
+        cacheByTag: true

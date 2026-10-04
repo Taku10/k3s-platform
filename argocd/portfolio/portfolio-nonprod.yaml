@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: portfolio-nonprod
   namespace: argocd
+  annotations:
+    kargo.akuity.io/authorized-stage: portfolio:nonprod
   labels:
     app.kubernetes.io/name: portfolio
     app.kubernetes.io/instance: portfolio-nonprod
@@ -13,8 +15,8 @@ spec:
   project: portfolio
   source:
     repoURL: https://github.com/Taku10/k3s-platform.git
-    targetRevision: main
-    path: apps/portfolio/overlays/nonprod
+    targetRevision: stage/portfolio/nonprod
+    path: .
   destination:
     server: https://kubernetes.default.svc
     namespace: nonprod
