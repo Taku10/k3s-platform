@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: portfolio-delivery
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  labels:
+    app.kubernetes.io/name: portfolio-delivery
+    app.kubernetes.io/part-of: portfolio
+    platform.takunda.cloud/category: platform
+spec:
+  project: platform
+
+  source:
+    repoURL: https://github.com/Taku10/k3s-platform.git
+    targetRevision: main
+    path: kargo/portfolio
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: portfolio
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true

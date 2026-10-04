@@ -1,0 +1,10 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: ProjectConfig
+metadata:
+  name: portfolio
+  namespace: portfolio
+spec:
+  promotionPolicies:
+    - stageSelector:
+        name: nonprod
+      autoPromotionEnabled: true

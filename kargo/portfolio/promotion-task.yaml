@@ -1,0 +1,50 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionTask
+metadata:
+  name: promote-portfolio
+  namespace: portfolio
+spec:
+  vars:
+    - name: gitopsRepo
+      value: https://github.com/Taku10/k3s-platform.git
+    - name: portfolioImage
+      value: ghcr.io/taku10/takunda-profile
+  steps:
+    - uses: git-clone
+      config:
+        repoURL: ${{ vars.gitopsRepo }}
+        checkout:
+          - branch: main
+            path: ./src
+          - branch: stage/portfolio/${{ ctx.stage }}
+            create: true
+            path: ./out
+    - uses: git-clear
+      config:
+        path: ./out
+    - uses: kustomize-set-image
+      as: update-images
+      config:
+        path: ./src/apps/portfolio/overlays/${{ ctx.stage }}
+        images:
+          - image: ${{ vars.portfolioImage }}
+            tag: ${{ imageFrom(vars.portfolioImage).Tag }}
+    - uses: kustomize-build
+      config:
+        path: ./src/apps/portfolio/overlays/${{ ctx.stage }}
+        outPath: ./out
+    - uses: git-commit
+      as: commit
+      config:
+        path: ./out
+        message: ${{ task.outputs['update-images'].commitMessage }}
+    - uses: git-push
+      config:
+        path: ./out
+    - uses: argocd-update
+      config:
+        apps:
+          - name: portfolio-${{ ctx.stage }}
+            sources:
+              - repoURL: ${{ vars.gitopsRepo }}
+                desiredRevision: ${{ task.outputs.commit.commit }}

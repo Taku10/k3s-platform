@@ -1,0 +1,20 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: nonprod
+  namespace: portfolio
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: portfolio
+      sources:
+        direct: true
+        autoPromotionOptions:
+          selectionPolicy: NewestFreight
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promote-portfolio
+          as: promote-portfolio
