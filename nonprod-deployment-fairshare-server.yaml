@@ -24,7 +24,7 @@ spec:
             secretKeyRef:
               key: MONGO_URI
               name: fairshare-secrets
-        image: ghcr.io/taku10/fairshare-server:c65a40e
+        image: ghcr.io/taku10/fairshare-server:edf7179
         imagePullPolicy: Always
         name: fairshare-server
         ports:
