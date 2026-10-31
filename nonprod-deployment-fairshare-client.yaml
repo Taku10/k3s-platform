@@ -17,7 +17,7 @@ spec:
       - envFrom:
         - configMapRef:
             name: fairshare-client-config-8c8bhb64ht
-        image: ghcr.io/taku10/fairshare-client:e23e8df
+        image: ghcr.io/taku10/fairshare-client:4a4041b
         imagePullPolicy: Always
         name: fairshare-client
         ports:
