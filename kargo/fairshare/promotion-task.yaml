@@ -30,9 +30,9 @@ spec:
         path: ./src/apps/fairshare/overlays/${{ ctx.stage }}
         images:
           - image: ${{ vars.clientImage }}
-            tag: ${{ imageFrom(vars.clientImage).Tag }}
+            tag: ${{ quote(imageFrom(vars.clientImage).Tag) }}
           - image: ${{ vars.serverImage }}
-            tag: ${{ imageFrom(vars.serverImage).Tag }}
+            tag: ${{ quote(imageFrom(vars.serverImage).Tag) }}
     - uses: kustomize-build
       config:
         path: ./src/apps/fairshare/overlays/${{ ctx.stage }}
