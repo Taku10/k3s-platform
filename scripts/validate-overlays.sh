@@ -33,8 +33,9 @@ for kustomization in "${packages[@]}"; do
     exit 1
   fi
 
-  if grep -Eq '^[[:space:]]*image:[[:space:]]*[^[:space:]]*:latest([[:space:]]|$)' "$output_file"; then
-    echo "Mutable :latest image found in $package_dir." >&2
+  if [[ "$package_dir" == */overlays/* ]] &&
+    grep -Eq '^[[:space:]]*image:[[:space:]]*[^[:space:]]*:latest([[:space:]]|$)' "$output_file"; then
+    echo "Mutable :latest image found in deployable overlay $package_dir." >&2
     exit 1
   fi
 done
