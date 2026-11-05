@@ -1,0 +1,45 @@
+name: Validate GitOps manifests
+
+on:
+  pull_request:
+    paths:
+      - apps/**
+      - argocd/**
+      - kargo/**
+      - platform/**
+      - scripts/validate-overlays.sh
+      - .github/workflows/validate-gitops.yaml
+  push:
+    branches:
+      - main
+    paths:
+      - apps/**
+      - argocd/**
+      - kargo/**
+      - platform/**
+      - scripts/validate-overlays.sh
+      - .github/workflows/validate-gitops.yaml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gitops-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    name: Render Kustomize packages
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Show kubectl version
+        run: kubectl version --client
+
+      - name: Render and inspect manifests
+        run: bash scripts/validate-overlays.sh
