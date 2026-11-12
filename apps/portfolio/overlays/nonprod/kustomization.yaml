@@ -13,4 +13,4 @@ replicas:
 
 images:
   - name: ghcr.io/taku10/takunda-profile
-    newTag: "95a03b71f7b5aa51141b697daa0a5ef57671bb82"
+    newTag: "f818dd0a3bc21e7d1586c6247ace6f8faed90a9b"
